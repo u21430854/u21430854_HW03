@@ -14,6 +14,43 @@ namespace u21430854_HW03.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult Index(HttpPostedFileBase userFile, string fileType)
+        {
+            //if the user actually selected a file
+            if (userFile != null && userFile.ContentLength > 0)
+            {
+                var name = Path.GetFileName(userFile.FileName); //get file name
+
+                //determine where to store file
+                var filePath = "";
+
+                switch (fileType)
+                {
+                    case "document":
+                        filePath = Path.Combine(Server.MapPath("~/Media/Documents"), name);
+                        break;
+
+                    case "image":
+                        filePath = Path.Combine(Server.MapPath("~/Media/Images"), name);
+                        break;
+
+                    case "video":
+                        filePath = Path.Combine(Server.MapPath("~/Media/Videos"), name);
+                        break;
+
+                    default:
+                        filePath = Path.Combine(Server.MapPath("~/Media/Documents"), name);
+                        break;
+                }
+
+                userFile.SaveAs(filePath); //save file
+            }
+
+            //back to default view
+            return RedirectToAction("Index");
+        }
+
         public ActionResult AboutMe()
         {
             return View();

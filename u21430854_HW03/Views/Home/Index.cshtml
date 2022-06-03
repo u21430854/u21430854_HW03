@@ -3,5 +3,72 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<head>
+    <!--Font Awesome icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        label {
+            font-weight: normal;
+        }
 
+        input[type="radio"] {
+            margin-right: 1em;
+        }
+
+        .choose-file:hover {
+            font-size: 120%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<h2>Upload media</h2>
+<h4>Upload word documents, pdf, images and more!</h4><br/>
+
+<div class="container">
+    <div class="row">
+        <div id="form" class="col col-sm-12 col-lg-3">
+            @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <label class="choose-file" style="color: #f0c348;">
+                    <input type="file" name="userFile" style="display: none;" onchange="showFileName()" />
+                    <i id="file" class="fa fa-file" style="font-size: 150%;"></i> Browse files...
+                </label><br />
+                <span id="fileName"></span><br /><br/>
+                <label for="doc">
+                    <input id="doc" name="fileType" type="radio" value="document" checked />Document
+                </label><br />
+                <label for="img">
+                    <input id="img" name="fileType" type="radio" value="image" />Image
+                </label><br />
+                <label for="vid">
+                    <input id="vid" name="fileType" type="radio" value="video" />Video
+                </label><br /><br />
+                <label class="btn btn-success">
+                    <input type="submit" value="Upload" style="display: none;" />
+                    Upload <i class="fa fa-upload"></i>
+                </label>
+            }
+        </div>
+
+        <div class="col col-sm-12 col-lg-9" id="description">
+            Uploading your files is as easy as 
+            <span style="font-size: 120%; color: #f0c348;"><strong><em>1, 2, 3</em></strong></span>:
+            <ol type="1">
+                <li>Choose the file</li>
+                <li>Choose the type of file- Image for pictures, Video for videos and Document for everything else</li>
+                <li>Upload!</li>
+            </ol><br/>
+            To download files from our server, just navigate to the right page using the menu, choose the file you 
+            want and click DOWNLOAD.
+        </div>
+    </div>
+</div>
+
+<script>
+    //function to show the selected file's name since the file input doesn't display
+    function showFileName() {
+        let chosenFile = document.querySelector("input[type=file]").files[0];
+        $("#fileName").html(chosenFile.name);
+    }
+</script>
