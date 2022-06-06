@@ -4,8 +4,6 @@
 }
 
 <head>
-    <!--Font Awesome icons-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         label {
             font-weight: normal;
@@ -16,7 +14,7 @@
         }
 
         .choose-file:hover {
-            font-size: 120%;
+            font-size: 110%;
             cursor: pointer;
         }
     </style>
@@ -27,7 +25,7 @@
 
 <div class="container">
     <div class="row">
-        <div id="form" class="col col-sm-12 col-lg-3">
+        <div id="form" class="col col-sm-12 col-md-3">
             @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <label class="choose-file" style="color: #f0c348;">
@@ -51,7 +49,7 @@
             }
         </div>
 
-        <div class="col col-sm-12 col-lg-9" id="description">
+        <div class="col col-sm-12 col-md-9" id="description">
             Uploading your files is as easy as 
             <span style="font-size: 120%; color: #f0c348;"><strong><em>1, 2, 3</em></strong></span>:
             <ol type="1">
