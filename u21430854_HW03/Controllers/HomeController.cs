@@ -45,10 +45,12 @@ namespace u21430854_HW03.Controllers
                 }
 
                 userFile.SaveAs(filePath); //save file
+
+                ViewBag.Notification = userFile.FileName + " has been uploaded.";
             }
 
             //back to default view
-            return RedirectToAction("Index");
+            return View();
         }
 
         public ActionResult AboutMe()

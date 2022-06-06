@@ -1,7 +1,69 @@
-﻿
+﻿@using u21430854_HW03.Models
+@model List<FileModel>
+
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Files</h2>
+<head>
+    <style>
+        tr:nth-child(odd) { background-color: rgb(255 234 175 / 0.3); }
+
+        .my-btn { padding: 3px 10px; font-size: 1.1em; }
+    </style>
+</head>
+
+<h2>Download documents</h2>
+<h4>Download any of the files uploaded as a document</h4><br/>
+
+<div class="table-responsive">
+    <table class="table table-bordered text-center">
+        <thead style="background-color: #f0c348; font-size: 1.2em;">
+            <tr>
+                <th class="text-left">File name</th>
+                <th class="text-center">Download option</th>
+                <th class="text-center">Delete option</th>
+            </tr>
+        </thead>
+            @if (Model.Count() > 0)
+            {
+                <tbody>
+                    @foreach (FileModel doc in Model)
+                    {
+                        <tr>
+                            <td class="text-left">@doc.FileName</td>
+                            <td>
+                                <a class="btn btn-success my-btn" 
+                                   href="@Url.Action("DownloadFile", "Files", new { name = doc.FileName })">
+                                    <i class="fa fa-download"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger my-btn" 
+                                   href="@Url.Action("DeleteFile", "Files", new { name = doc.FileName })">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" style="border-right: hidden;"></td>
+                        <td>
+                            <a class="btn btn-danger" 
+                               onclick="return confirm('Are you sure you want to delete all documents? This action cannot be undone.');"
+                               href="@Url.Action("DeleteAll")">
+                                DELETE ALL
+                            </a>
+                        </td>
+                    </tr>
+                </tfoot>
+            }
+    </table>
+            @if (!(Model.Count() > 0))
+            {
+                <div style="font-size: 1.5rem; font-weight: bold;">No files available for download</div>
+            }
+</div>
 
