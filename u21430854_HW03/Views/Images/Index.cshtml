@@ -1,7 +1,220 @@
-﻿
+﻿@using u21430854_HW03.Models
+@model List<FileModel>
+
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Images</h2>
+<head>
+    <style>
+        .image-box {
+            height: 30vh;
+            padding-left: 5px;
+            padding-bottom: 10px;
+        }
 
+        .image {
+            width: 50%;
+            height: 100%;
+        }
+
+        .image-text {
+            float: right;
+            text-align: center;
+        }
+
+        .image-name {
+            font-family: Georgia;
+            font-size: 1.1em;
+        }
+
+        #fancy-box {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: none;
+        }
+
+        .fancybox-btn {
+            position: fixed;
+            background-color: white;
+            font-size: 1.6rem;
+            color: #f0c348;
+            border: 2px solid #f0c348;
+            text-align: center;
+            border-radius: 50%;
+            height: 4.2vh;
+            width: 4.2vh;
+            z-index: 101;
+        }
+
+        #close-btn {
+            top: 14%;
+            right: 19.5%;
+        }
+
+        #fancybox-content {
+            position: fixed;
+            top: 15%;
+            left: 20%;
+            z-index: 100;
+            height: 80%;
+            width: 60%;
+            border: 5px solid #f0c348;
+            background-color: rgb(0 0 0 / 0.9);
+            text-align: center;
+        }
+
+        #fancybox-img-container { width: 100%; height: 100%; }
+
+        #fancybox-img {
+            max-width: 100%;
+            max-height: 100%;
+            margin: auto;
+        }
+
+        #previous-btn {
+            top: 50%;
+            left: 19.3%;
+            font-size: 1.7rem;
+        }
+
+        #next-btn {
+            top: 50%;
+            right: 19.3%;
+            font-size: 1.7rem;
+        }
+
+        #fancybox-title {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5vh;
+            text-align: left;
+            padding: 5px 20px;
+        }        
+    </style>
+</head>
+
+<main>
+    <h2>Dowload images</h2>
+    <h4>Download any of the files uploaded as an image</h4>
+    <br />
+
+    <div class="container">
+        <div class="row">
+            @if (Model.Count() > 0)
+            {
+                var i = 0;
+
+                foreach (FileModel picture in Model)
+                {
+                    <div class="col col-sm-12 col-md-6 col-lg-4 image-box">
+                        <a class="fancybox" onclick="showFancybox('@picture.FileName', @i)">
+                            <img src="~/Media/Images/@picture.FileName" alt="@picture.FileName" class="image" />
+                        </a>
+
+                        <div class="image image-text">
+                            <div class="image-name">@picture.FileName</div><br />
+                            <a class="btn btn-success"
+                               href="@Url.Action("DownloadFile", "Images", new { name = picture.FileName })">
+                                Download <i class="fa fa-download"></i>
+                            </a><br /><br />
+                            <a class="btn btn-danger"
+                               href="@Url.Action("DeleteFile", "Images", new { name = picture.FileName })">
+                                Delete <i class="fa fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    i++;
+                }
+            }
+            else
+            {
+                <div style="font-size: 1.5rem; font-weight: bold;">No images available for download</div>
+            }
+        </div>
+    </div>
+</main>
+
+<div id="fancy-box" tabindex="-1">
+    <div id="close-btn" class="fancybox-btn" onclick="closeFancybox()">
+        <i class="fa fa-times"></i>
+    </div>
+    <div id="fancybox-content">
+        <div id="fancybox-img-container">
+            <img id="fancybox-img" />
+            <div id="previous-btn" class="fancybox-btn" onclick="showPrevious()"><i class="fa fa-chevron-left"></i></div>
+            <div id="next-btn" class="fancybox-btn" onclick="showNext()"><i class="fa fa-chevron-right"></i></div>
+            <div id="fancybox-title"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    const allImagePaths = []; //string array to store file paths of all images
+    let index; //variable for storing index of current picture
+
+    window.addEventListener('load', function () {
+        //store all image paths in javascript string array thaat' easier to work with than FileModel list
+        @foreach (FileModel image in Model)
+        {
+            <text>
+                allImagePaths.push('/Media/Images/' + '@image.FileName');
+            </text>
+        }
+    });
+
+    //show the right picture in the fancybox
+    function showFancybox(pictureName, pictureIndex) {
+        index = pictureIndex;
+
+        //display fancy box
+        $("#fancy-box").css("display", "block");
+        $("main").css("opacity", "0.4");
+
+        showImage();
+    }
+
+    //show image in fancybox
+    function showImage() {
+        let name = allImagePaths[index].substring(14); //get name of picture from path
+
+        $("#fancybox-img").attr("src", `${allImagePaths[index]}`);
+        $("#fancybox-title").html(name);
+    }
+
+    //close fancybox
+    function closeFancybox() {
+        $("#fancy-box").css("display", "none");
+        $("main").css("opacity", "1");
+    }
+
+    //add next and previous buttons on hover
+    //show next and previous images on hover
+    function showNext() { //if we've reached the last pic, go back to the first
+        if (index == allImagePaths.length - 1) {
+            index = 0;
+        }
+        else {
+            index++;
+        }
+        showImage();
+    }
+
+    function showPrevious() {
+        if (index == 0) { //if we've reached the first pic, go back to the last
+            index = allImagePaths.length - 1;
+        }
+        else {
+            index--;
+        }
+        showImage();
+    }
+
+</script>

@@ -52,7 +52,7 @@
                         <td colspan="2" style="border-right: hidden;"></td>
                         <td>
                             <a class="btn btn-danger" 
-                               onclick="return confirm('Are you sure you want to delete all documents? This action cannot be undone.');"
+                               onclick="return confirm('Are you sure you want to delete @Model.Count() document(s)? This action cannot be undone.');"
                                href="@Url.Action("DeleteAll")">
                                 DELETE ALL
                             </a>
