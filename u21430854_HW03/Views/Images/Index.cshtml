@@ -95,7 +95,7 @@
             height: 5vh;
             text-align: left;
             padding: 5px 20px;
-        }        
+        }
     </style>
 </head>
 
@@ -113,7 +113,7 @@
                 foreach (FileModel picture in Model)
                 {
                     <div class="col col-sm-12 col-md-6 col-lg-4 image-box">
-                        <a class="fancybox" onclick="showFancybox('@picture.FileName', @i)">
+                        <a class="fancybox" onclick="showFancybox(@i)">
                             <img src="~/Media/Images/@picture.FileName" alt="@picture.FileName" class="image" />
                         </a>
 
@@ -171,7 +171,7 @@
     });
 
     //show the right picture in the fancybox
-    function showFancybox(pictureName, pictureIndex) {
+    function showFancybox(pictureIndex) {
         index = pictureIndex;
 
         //display fancy box
@@ -196,7 +196,7 @@
     }
 
     //add next and previous buttons on hover
-    //show next and previous images on hover
+    //show next and previous images
     function showNext() { //if we've reached the last pic, go back to the first
         if (index == allImagePaths.length - 1) {
             index = 0;
