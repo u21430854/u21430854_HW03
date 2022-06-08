@@ -42,7 +42,8 @@
                 foreach (FileModel video in Model)
                 {
                     <div class="col col-sm-12 col-md-6 col-lg-4 video-box">
-                        <a class="fancybox" href="~/Media/Videos/@video.FileName">
+                        <a class="fancybox" href="~/Media/Videos/@video.FileName"
+                           data-caption="@video.FileName" title="@video.FileName">
                             <video class="video" src="~/Media/Videos/@video.FileName">
                                 Your browser cannot play @video.FileName because it doesn't support the video tag.
                             </video>
@@ -73,17 +74,7 @@
 <script type="text/javascript">
     //fancy box
     window.addEventListener('load', function () {
-        $(".fancybox").attr("data-fancybox", "gallery"); //add ideos to the same gallery
-
-        //make data caption and title equal to video name
-        $(".fancybox").each(
-            function () {
-                //get video name from file path
-                let name = $(this).attr("href").substring(14);
-
-                $(this).attr("data-caption", name);
-                $(this).attr("title", name);
-            });
+        $(".fancybox").attr("data-fancybox", "gallery"); //add videos to the same gallery
 
         $(".fancybox").fancybox();
     });

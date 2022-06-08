@@ -42,7 +42,8 @@
                 foreach (FileModel picture in Model)
                 {
                     <div class="col col-sm-12 col-md-6 col-lg-4 image-box">
-                        <a class="fancybox" href="~/Media/Images/@picture.FileName">
+                        <a class="fancybox" href="~/Media/Images/@picture.FileName"
+                           data-caption="@picture.FileName" title="@picture.FileName">
                             <img src="~/Media/Images/@picture.FileName" alt="@picture.FileName" class="image" />
                         </a>
 
@@ -72,13 +73,6 @@
     //fancy box
     window.addEventListener('load', function () {
         $(".fancybox").attr("data-fancybox", "gallery"); //add images to the same gallery
-
-        //make data caption and title equal to image alt text i.e. image name
-        $(".fancybox").each(
-            function () {
-            $(this).attr("data-caption", $(this).find("img").attr("alt"));
-            $(this).attr("title", $(this).find("img").attr("alt"));
-        });
 
         $(".fancybox").fancybox();
     });
