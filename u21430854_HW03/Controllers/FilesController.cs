@@ -39,7 +39,6 @@ namespace u21430854_HW03.Controllers
         public ActionResult DeleteFile(string name)
         {
             string filePath = Server.MapPath("~/Media/Documents/") + name; //get file path
-            byte[] byteArr = System.IO.File.ReadAllBytes(filePath); //read file
 
             System.IO.File.Delete(filePath);
 
@@ -55,8 +54,6 @@ namespace u21430854_HW03.Controllers
             //loop through and delete
             foreach (string docPath in allPaths)
             {
-                byte[] byteArray = System.IO.File.ReadAllBytes(docPath); //read file
-
                 System.IO.File.Delete(docPath); //delete
             }
 

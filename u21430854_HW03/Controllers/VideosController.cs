@@ -37,7 +37,6 @@ namespace u21430854_HW03.Controllers
         public ActionResult DeleteFile(string name)
         {
             string videoPath = Server.MapPath("~/Media/Videos/") + name;
-            byte[] byteArray = System.IO.File.ReadAllBytes(videoPath); //read into array
 
             System.IO.File.Delete(videoPath); //delete
 

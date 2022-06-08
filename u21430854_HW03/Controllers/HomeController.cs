@@ -23,7 +23,7 @@ namespace u21430854_HW03.Controllers
                 var name = Path.GetFileName(userFile.FileName); //get file name
 
                 //determine where to store file
-                var filePath = "";
+                string filePath;
 
                 switch (fileType)
                 {

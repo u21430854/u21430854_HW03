@@ -27,65 +27,6 @@
             font-family: Georgia;
             font-size: 1.1em;
         }
-
-        #fancy-box {
-            width: 100%;
-            height: 100%;
-            position: fixed;
-            display: none;
-        }
-
-        .fancybox-btn {
-            position: fixed;
-            background-color: white;
-            font-size: 1.6rem;
-            color: #f0c348;
-            border: 2px solid #f0c348;
-            text-align: center;
-            border-radius: 50%;
-            height: 4.2vh;
-            width: 4.2vh;
-            z-index: 101;
-        }
-
-        #close-btn {
-            top: 14%;
-            right: 19.5%;
-        }
-
-        #fancybox-content {
-            position: fixed;
-            top: 15%;
-            left: 20%;
-            z-index: 100;
-            height: 80%;
-            width: 60%;
-            border: 5px solid #f0c348;
-            background-color: rgb(0 0 0 / 0.9);
-            text-align: center;
-        }
-
-        #fancybox-vid-container {
-            width: 100%;
-            height: 100%;
-        }
-
-        #fancybox-vid {
-            max-height: 100%;
-            width: 100%;
-        }
-
-        #fancybox-title {
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 5vh;
-            text-align: left;
-            padding: 5px 20px;
-        }
     </style>
 </head>
 
@@ -98,15 +39,12 @@
         <div class="row">
             @if (Model.Count() > 0)
             {
-                var i = 0;
-
                 foreach (FileModel video in Model)
                 {
                     <div class="col col-sm-12 col-md-6 col-lg-4 video-box">
-                        <a class="fancybox" onclick="showFancybox('@video.FileName', @i)">
-                            <video class="video">
+                        <a class="fancybox" href="~/Media/Videos/@video.FileName">
+                            <video class="video" src="~/Media/Videos/@video.FileName">
                                 Your browser cannot play @video.FileName because it doesn't support the video tag.
-                                <source src="~/Media/Videos/@video.FileName" />
                             </video>
                         </a>
 
@@ -122,8 +60,6 @@
                             </a>
                         </div>
                     </div>
-
-                    i++;
                 }
             }
             else
@@ -134,67 +70,21 @@
     </div>
 </main>
 
-<div id="fancy-box" tabindex="-1">
-    <div id="close-btn" class="fancybox-btn" onclick="closeFancybox()">
-        <i class="fa fa-times"></i>
-    </div>
-    <div id="fancybox-content">
-        <div id="fancybox-vid-container">
-            <video id="fancybox-vid" autoplay muted controls>
-                <source id="fancybox-source" />
-                Your browser cannot play this video because it doesn't support the video tag.
-            </video>
-            <div id="fancybox-title"></div>
-        </div>
-    </div>
-</div>
-
 <script type="text/javascript">
-
-    const allVideoPaths = []; //string array to store file paths of all videos
-    let index; //variable for storing index of current video
-
+    //fancy box
     window.addEventListener('load', function () {
-        //store all video paths in javascript string array that's easier to work with than FileModel list
-        @foreach (FileModel video in Model)
-        {
-            <text>
-                allVideoPaths.push('/Media/Videos/' + '@video.FileName');
-            </text>
-        }
+        $(".fancybox").attr("data-fancybox", "gallery"); //add ideos to the same gallery
+
+        //make data caption and title equal to video name
+        $(".fancybox").each(
+            function () {
+                //get video name from file path
+                let name = $(this).attr("href").substring(14);
+
+                $(this).attr("data-caption", name);
+                $(this).attr("title", name);
+            });
+
+        $(".fancybox").fancybox();
     });
-
-    //show the right video in the fancybox
-    function showFancybox(videoName, videoIndex) {
-        index = videoIndex;
-
-        //display fancy box
-        $("#fancy-box").css("display", "block");
-        $("main").css("opacity", "0.4");
-
-        showVideo();
-    }
-
-    //show video in fancybox
-    function showVideo() {
-        let name = allVideoPaths[index].substring(14); //get name of video from path
-
-        document.getElementById('fancybox-source').src = allVideoPaths[index];
-        $("#fancybox-title").html(name);
-    }
-
-    //close fancybox
-    function closeFancybox() {
-        $("#fancy-box").css("display", "none");
-        $("main").css("opacity", "1");
-    }
-
 </script>
-
-<!--
-
-Added:
-- show videos when page loads
-- download videos
-- delete videos
-- fancybox gallery-->

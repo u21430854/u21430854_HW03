@@ -37,7 +37,6 @@ namespace u21430854_HW03.Controllers
         public ActionResult DeleteFile(string name)
         {
             string imgPath = Server.MapPath("~/Media/Images/") + name; //file path
-            byte[] byteArray = System.IO.File.ReadAllBytes(imgPath); //read file
 
             System.IO.File.Delete(imgPath); //delete file
 
